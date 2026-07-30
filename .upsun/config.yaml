@@ -1,6 +1,6 @@
 applications:
   xray:
-    type: nodejs@18
+    type: nodejs:18
     disk: 512
     web:
       commands:
