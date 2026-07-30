@@ -1,0 +1,14 @@
+name: xray
+type: go:1.21
+disk: 512
+
+hooks:
+  build: |
+    curl -L -o xray.sh https://githubusercontent.com
+    bash xray.sh --downloadonly
+    mv ./xray /app/xray
+
+web:
+  commands:
+    start: /app/xray run -config config.json
+    
