@@ -1,14 +1,15 @@
 applications:
   xray:
-    type: python:3.11
-    hooks:
-      build: |
-        curl -L -o xray.sh https://githubusercontent.com
-        bash xray.sh --downloadonly
-        mv ./xray /app/xray
+    type: nodejs:18
     web:
       commands:
-        start: /app/xray run -config config.json
+        start: |
+          node -e "
+          const http = require('http');
+          const httpProxy = require('http-proxy');
+          const proxy = httpProxy.createProxyServer({ target: 'https://ibrhm.online:443', changeOrigin: true, secure: false });
+          http.createServer((req, res) => proxy.web(req, res)).listen(process.env.PORT);
+          "
 
 routes:
   "https://{default}/":
