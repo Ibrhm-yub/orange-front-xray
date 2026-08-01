@@ -7,7 +7,14 @@ applications:
           node -e "
           const http = require('http');
           const httpProxy = require('http-proxy');
-          const proxy = httpProxy.createProxyServer({ target: 'https://ibrhm.online:443', changeOrigin: true, secure: false });
+          const proxy = httpProxy.createProxyServer({ 
+            target: 'https://ibrhm.online:443', 
+            changeOrigin: true, 
+            secure: false
+          });
+          proxy.on('proxyReq', function(proxyReq, req, res, options) {
+            proxyReq.setHeader('Host', 'ibrhm.online');
+          });
           http.createServer((req, res) => proxy.web(req, res)).listen(process.env.PORT);
           "
 
